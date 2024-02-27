@@ -9,10 +9,8 @@
 </head>
 <body>
     <div id="app">
-        <a>Site</a>
-        <p>visualização vue</p>
-        <input type="text">
-        <input type="checkbox">
+        <input type="text" @keyup="imprimirTexto()">
+        <button v-on:click="mensagemAlert()">Adicionar</button>
     </div>
 
     <script>
@@ -20,21 +18,14 @@
         const vm = new Vue({
             el: '#app',
             data: {
-                n1:10,
-                n2:5
+                mensagem:'tete'
             },
             methods:{
-                somar: function somar(){ //convencional
-                    return this.n1 + this.n2;
+                imprimirTexto(){
+                    console.log('digitando')
                 },
-                sub: function () {//anonima
-                    return this.n1 - this.n2; 
-                },
-                mult: ()=>{//arrow function
-                    return 4*3;
-                },
-                dividir(){ //forma enxuta
-                    return this.n1 / this.n2;
+                mensagemAlert(){
+                    alert('Mensagem de texto do alerta');
                 }
             }
         })
