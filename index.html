@@ -36,76 +36,27 @@
 </head>
 <body>
     <div id="app">
-        <!-- v-if simples-->
-        <button @click="exibirSaldo = !exibirSaldo"><!-- toggle -->
-            <span v-if="!exibirSaldo">Exibir Saldo</span> 
-            <span v-if="exibirSaldo">Ocultar Saldo</span> 
-        </button>
-
-        <p>Saldo: <span v-if="exibirSaldo">R$ {{saldo}}</span></p>
+        <h4>Adicionar Pacientes</h4>
+        <span>Nome: </span><input type="text" id="inputNome"><br>
+        <span>Idade: </span><input type="text" id="inputIdade"><br>
+        <span>Plano: </span><input type="text" id="inputPlano"><br>
+        <button @click="adicionarPaciente()">Adicionar</button>
         <hr>
 
-        <!-- v-if e v-else-->
-        Idade: <input type="text" id="inputIdade" @blur="setIdade()">
-        <p v-if="idade > 18">Maior de Idade</p>
-        <p v-else>Menor de Idade</p>
+
+        <h4>Último Paciente</h4>
+        <p v-if="pacientes.length > 0">
+            {{ ultimoPaciente }}
+        </p>
+
         <hr>
+        <h4>Paciente Plano OURO</h4>
+        <p v-for="p in pacientesPlanoOuro">{{ p.nome }}</p>
 
-        <!-- v-if, v-else-if e v-else-->
-        Nota: <input type="text" id="inputNota" @blur="setNota()">
-        <p v-if="nota == '' ">Insira uma nota</p>
-        <p v-else-if="nota >=7 && nota <= 10">Aluno Aprovado</p>
-        <p v-else-if="nota >=5 && nota <7">Aluno em Recuperação</p>
-        <p v-else-if="nota >=0 && nota <5">Aluno em Reprovado</p>
-        <p v-else>A nota informada é invallida</p>
+        
         <hr>
-
-        <!-- v-html -->
-        <div v-html="elementosHTML">Texto de <b>exemplo</b></div><br>
-        <!-- v-text -->
-        <div v-text="elementosHTML">Texto de exemplo</div>
-        <hr>
-
-        <!-- v-once-->
-        <p v-once>Saldo Inicial: {{ saldo }}</p>
-        <p>Saldo Atualizado: {{ saldo }}</p>
-        <input type="text" id="valor" @blur="setNota()">
-        <button @click="creditar()">Creditar</button>
-        <button @click="debitar()">Debitar</button>
-        <hr>
-
-        <ul>
-            <li v-for="curso in cursos">{{curso}}</li>
-        </ul>
-        <hr>
-
-        <table border="5px">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Titulo</th>
-                    <th>Descrição</th>
-                </tr>            
-            </thead>
-            <tbody>
-                <tr v-for="(curso, chave) in cursos2">
-                    <td>{{chave}}</td>
-                    <td>{{curso.titulo}}</td>
-                    <td>{{curso.descricao}}</td>
-
-                </tr>
-            </tbody>
-        </table>
-        <hr>
-
-        <ul>
-            <li v-for="c in comentarios">{{c.id}} - {{c.comentario}}</li>
-        </ul>
-        <button @click="adicionarElemento()">Adicionar</button>
-        <button @click="removendoElemento()">Remover</button>
-
-        <button @click="modificarElemento()">Modificar</button>
-        <hr>
+        <h4>Pacientes cadastrados</h4>
+        <p v-for="p in pacientes">{{p.nome}}</p>
         
     </div>
 
@@ -114,57 +65,32 @@
         const vm = new Vue({
             el: '#app',
             data: {
-                saldo: 4570.17,
-                exibirSaldo:false,
-                idade: 0,
-                nota:0,
-                elementosHTML: '<p><b>Site</b></p><a href="https://github.com/SabrinaRF/app_vue">Github</a>',
-                cursos:[
-                    'Laravel',
-                    'Vue',
-                    'php',
-                    'angular',
-                    'solid'
-                ],
-                cursos2:{
-                    100:{
-                        titulo:'Laravel',
-                        descricao:'Laravell Laravell Laravell Laravell Laravell Laravell Laravell Laravell Laravell '
-                    },
-                    101:{
-                        titulo:'PHP',
-                        descricao:'PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP'
-                    }
-                },
-                comentarios:[
-                    {id:1, comentario:'laravel 1'},
-                    {id:2, comentario:'laravel 2'},
-                    {id:3, comentario:'laravel 3'}
-                ]
+                pacientes:[]
             },
             methods:{
-                setIdade(){
-                    this.idade = inputIdade.value;
+                adicionarPaciente(){
+                    this.pacientes.push({
+                        nome: inputNome.value,
+                        idade: inputIdade.value,
+                        plano: inputPlano.value
+
+                    })
+                }
+            },
+            computed:{
+                ultimoPaciente(){
+                    let key = this.pacientes.length - 1
+                    let txt =''
+
+                    txt += 'Paciente' + this.pacientes[key].nome
+                    txt += ', Idade' + this.pacientes[key].idade
+                    txt += ', Plano' + this.pacientes[key].plano
+
+                    return txt
+
                 },
-                setNota(){
-                    this.nota = inputNota.value;
-                },
-                credentar(){
-                    this.saldo+=parseFloat(valor.value);
-                    alert("Crédito realizado com sucesso!");
-                },
-                debitar(){
-                    this.saldo-=parseFloat(valor.value);
-                    alert("Debito realizado com sucesso!");
-                },
-                adicionarElemento(){
-                    this.comentarios.push({id:4,comentario:'novo comentario'});
-                },
-                removendoElemento(){
-                    this.comentarios.pop();
-                },
-                modificarElemento(){
-                    this.$set(this.comentarios, 1, {id:2,comentario:'novo comentario 2'})
+                pacientesPlanoOuro(){
+                    return this.pacientes.filter(item => item.plano == 'Ouro')
                 }
             }
         })
