@@ -96,6 +96,16 @@
                 </tr>
             </tbody>
         </table>
+        <hr>
+
+        <ul>
+            <li v-for="c in comentarios">{{c.id}} - {{c.comentario}}</li>
+        </ul>
+        <button @click="adicionarElemento()">Adicionar</button>
+        <button @click="removendoElemento()">Remover</button>
+
+        <button @click="modificarElemento()">Modificar</button>
+        <hr>
         
     </div>
 
@@ -125,7 +135,12 @@
                         titulo:'PHP',
                         descricao:'PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP PHP'
                     }
-                }
+                },
+                comentarios:[
+                    {id:1, comentario:'laravel 1'},
+                    {id:2, comentario:'laravel 2'},
+                    {id:3, comentario:'laravel 3'}
+                ]
             },
             methods:{
                 setIdade(){
@@ -141,6 +156,15 @@
                 debitar(){
                     this.saldo-=parseFloat(valor.value);
                     alert("Debito realizado com sucesso!");
+                },
+                adicionarElemento(){
+                    this.comentarios.push({id:4,comentario:'novo comentario'});
+                },
+                removendoElemento(){
+                    this.comentarios.pop();
+                },
+                modificarElemento(){
+                    this.$set(this.comentarios, 1, {id:2,comentario:'novo comentario 2'})
                 }
             }
         })
